@@ -1,39 +1,33 @@
 class Solution {
 public:
-    int n;
-    int t[23][23];
-    int solve(vector<int>& nums, int l, int r) {
-        
-        if(l > r)
-            return 0;
-        
-        if(l == r)
-            return nums[l];
-        
-        if(t[l][r] != -1)
-            return t[l][r];
-        
-        int take_left  = nums[l] + min(solve(nums, l+2, r), solve(nums, l+1, r-1));
-        
-        int take_right = nums[r] + min(solve(nums, l, r-2), solve(nums, l+1, r-1));
-        
-        
-        return t[l][r] = max(take_left, take_right);
-        
-    }
-    
     bool predictTheWinner(vector<int>& nums) {
+
+        int totalSum = accumulate(nums.begin(), nums.end(), 0);
+
+        vector<vector<int>> dp(nums.size() +1, vector<int>(nums.size() +1, -1));
         
-        memset(t, -1, sizeof(t));
-        
-        n = nums.size();
-        
-        
-        int total = accumulate(begin(nums), end(nums), 0);
-        
-        int player1 = solve(nums, 0, n-1);
-        int player2 = total - player1;
-        
-        return player1 >= player2;
+        int p1 = solve(0, nums.size() - 1, nums, dp);
+
+        int p2 = totalSum - p1;
+
+        if (p1 >= p2) return true;
+
+        return false;  
+    }
+
+    int solve(int i, int j, vector<int> &nums, vector<vector<int>> &dp){
+        if(i > j) return 0;
+
+        if(i == j) return nums[i];
+
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+
+        int take_i = nums[i] + min(solve(i+2, j, nums, dp), solve(i+1, j-1, nums, dp));
+
+        int take_j = nums[j] + min(solve(i+1, j-1, nums, dp), solve(i, j-2, nums, dp));
+
+        return dp[i][j] = max(take_i, take_j);
     }
 };
