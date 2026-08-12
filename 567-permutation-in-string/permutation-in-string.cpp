@@ -1,35 +1,30 @@
 class Solution {
 public:
     bool checkInclusion(string s1, string s2) {
-        int n = s1.size();
-        int m = s2.size();
+        int m = s1.size();
+        int n = s2.size();
+      
+        unordered_map<int, int> fqs1;
+        unordered_map<int, int> fqs2;
 
-        vector<int> s2freq(26, 0);
-        vector<int> s1freq(26,0);
-
-        for(int i = 0; i < n; i++){
-            int idx = s1[i] - 'a';
-            s1freq[idx]++;
+        for(int i = 0; i<m; i++){
+            fqs1[s1[i]]++;
         }
 
-        int i =0;
-        int j =0;
+        int left = 0;
+        for(int right =0; right < n; right++){
+            fqs2[s2[right]]++;
 
-        while(j < m){
-            
-            s2freq[s2[j] - 'a']++;
+            if(right - left + 1 == m){
+                if(fqs1 == fqs2) return true;
 
-            if(j - i + 1 > n){
-                s2freq[s2[i] - 'a']--; // yaha pe window shrink karni hai. kyuki window ka size badh gaya hai.
-                i++;
+                fqs2[s2[left]]--;
+                if(fqs2[s2[left]] == 0){
+                    fqs2.erase(s2[left]);
+                }
+                left++;
             }
-
-            if(s1freq == s2freq){  // yaha pe dono freq vector compare karenge barabr hai toh true return kar denge
-                return true;
-            }
-            
-            j++; // normal window aage bade gi
-        } 
+        }
 
         return false;
     }
