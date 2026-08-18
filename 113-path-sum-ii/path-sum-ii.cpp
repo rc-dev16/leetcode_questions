@@ -21,7 +21,7 @@ public:
         return res;
     }
 
-    void helper(TreeNode* root, int cs, int ts, vector<int> path, vector<vector<int>> &res){
+    void helper(TreeNode* root, int cs, int ts, vector<int> &path, vector<vector<int>> &res){
         if(!root){
             return;
         }
@@ -35,5 +35,7 @@ public:
 
         helper(root->left, cs, ts, path, res);
         helper(root->right, cs, ts, path, res);
+
+        path.pop_back();
     }
 };
