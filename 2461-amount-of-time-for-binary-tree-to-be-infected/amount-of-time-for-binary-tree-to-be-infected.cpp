@@ -28,12 +28,10 @@ public:
             return -1;
         } else if(l >=0 && r >= 0){
             return max(l, r) + 1;
-        } else{
-            int d = abs(l) + abs(r);
-            res = max(res, d);
-            return min(l, r) - 1;
         }
-
-        return 0; 
+            
+        int d = abs(l) + abs(r);
+        res = max(res, d);
+        return min(l, r) - 1;   
     }
 };
